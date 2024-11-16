@@ -20,7 +20,7 @@ const RenderPageList = ({ data }: RenderPageListProps) => {
   const { toast } = useToast();
   const router = useRouter();
 
-  const initPostDelete = (slug: string) => {
+  const initPageDelete = (slug: string) => {
     setDeletePageSlug(slug);
     setIsDeleteConfirmOpen(true);
   };
@@ -28,7 +28,7 @@ const RenderPageList = ({ data }: RenderPageListProps) => {
   const columns = useMemo(
     () =>
       getPageTableColumns({
-        deletePageHandler: initPostDelete
+        deletePageHandler: initPageDelete
       }),
     []
   );
@@ -75,7 +75,7 @@ const RenderPageList = ({ data }: RenderPageListProps) => {
         setIsOpen={setIsDeleteConfirmOpen}
         submitHandler={deletePageHandler}
       />
-      <DataTable data={data} columns={columns} />
+      <DataTable data={data} columns={columns} searchType="route" />
     </div>
   );
 };

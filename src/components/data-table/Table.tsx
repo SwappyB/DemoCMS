@@ -38,9 +38,10 @@ import type { Post, Page } from "@/types";
 type TableProps = {
   data: Post[] | Page[];
   columns: ColumnDef<any>[];
+  searchType?: "title" | "route";
 };
 
-export function DataTable({ data, columns }: TableProps) {
+export function DataTable({ data, columns, searchType }: TableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -72,10 +73,16 @@ export function DataTable({ data, columns }: TableProps) {
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Search"
-          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+          placeholder={"Search " + (searchType || "title") + "..."}
+          value={
+            (table
+              .getColumn(searchType || "title")
+              ?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
-            table.getColumn("title")?.setFilterValue(event.target.value)
+            table
+              .getColumn(searchType || "title")
+              ?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
