@@ -12,6 +12,7 @@ import { Toaster } from "@/components/ui/toaster";
 const font = Recursive({ subsets: ["latin"] });
 
 import { PluginProvider } from "@/plugins/PluginContext";
+import PluginInit from "@/plugins";
 
 export default function RootLayout({
   children
@@ -24,7 +25,10 @@ export default function RootLayout({
         <Navbar />
         <main className="flex grainy-light flex-col min-h-[calc(100vh-3.5rem-1px)]">
           <div className="flex-1 flex flex-col h-full">
-            <PluginProvider>{children}</PluginProvider>
+            <PluginProvider>
+              <PluginInit />
+              {children}
+            </PluginProvider>
           </div>
         </main>
         <Toaster />

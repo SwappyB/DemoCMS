@@ -17,7 +17,6 @@ import EditorToolbar from "@/plugins/Toolbar";
 import WysiwygEditor from "@/components/WYSIWYG/Editor";
 import { UseFormReturn } from "react-hook-form";
 
-import { useInitializeVideoPlugin } from "@/plugins/videoPlugin";
 import { usePlugins } from "@/plugins/PluginContext";
 
 type PageFormProps = {
@@ -44,8 +43,6 @@ const PageForm = ({
   content,
   setContent
 }: PageFormProps) => {
-  useInitializeVideoPlugin();
-
   const handleAddBlock = (block: any) => {
     setContent((prevContent: any) => [...prevContent, block]);
   };

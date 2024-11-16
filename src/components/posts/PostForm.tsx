@@ -17,7 +17,6 @@ import EditorToolbar from "@/plugins/Toolbar";
 import WysiwygEditor from "@/components/WYSIWYG/Editor";
 import { UseFormReturn } from "react-hook-form";
 
-import { useInitializeVideoPlugin } from "@/plugins/videoPlugin";
 import { usePlugins } from "@/plugins/PluginContext";
 
 type PostFormProps = {
@@ -43,8 +42,6 @@ const PostForm = ({
   content,
   setContent
 }: PostFormProps) => {
-  useInitializeVideoPlugin();
-
   const handleAddBlock = (block: any) => {
     setContent((prevContent: any) => [...prevContent, block]);
   };

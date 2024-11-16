@@ -4,7 +4,6 @@ import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 
 import RenderEditorContent from "@/components/WYSIWYG/RenderContent";
 import RenderBlocks from "@/plugins/RenderBlocks";
-import PluginInit from "./_components/plugin";
 type tParams = Promise<{ slug: string[] }>;
 
 export default async function DynamicPage({ params }: { params: tParams }) {
@@ -30,7 +29,6 @@ export default async function DynamicPage({ params }: { params: tParams }) {
 
   return (
     <div>
-      <PluginInit />
       <MaxWidthWrapper className="pb-2 pt-3 sm:pb-32 lg:pt-4 xl:pt-6 lg:pb-52">
         <div className="flex flex-col gap-4">
           <div className="text-5xl">{pageData?.title}</div>
