@@ -11,6 +11,9 @@ import { Toaster } from "@/components/ui/toaster";
 
 const font = Recursive({ subsets: ["latin"] });
 
+// Load plugins
+import "@/plugins";
+
 export default function RootLayout({
   children
 }: Readonly<{
