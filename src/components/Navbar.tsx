@@ -15,7 +15,7 @@ const Navbar = async () => {
           <div className="h-full flex items-center space-x-4">
             <>
               <Link
-                href="/api/auth/register"
+                href="/dashboard/pages"
                 className={buttonVariants({
                   size: "sm",
                   variant: "ghost"

@@ -27,8 +27,9 @@ model Page {
   id        Int      @id @default(autoincrement())
   title     String
   slug      String   @unique
+  route     String   @unique
   content   Json     @default("[]") // Content blocks in JSON format
-  template  String?  // Optional field for page templates
+  pluginContent   Json     @default("[]") // Plugin Content blocks in JSON format
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
