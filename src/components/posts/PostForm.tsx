@@ -12,8 +12,13 @@ import {
   FormMessage
 } from "@/components/ui/form";
 
+import EditorToolbar from "@/plugins/Toolbar";
+
 import WysiwygEditor from "@/components/WYSIWYG/Editor";
 import { UseFormReturn } from "react-hook-form";
+
+import { useInitializeVideoPlugin } from "@/plugins/videoPlugin";
+import { usePlugins } from "@/plugins/PluginContext";
 
 type PostFormProps = {
   form: UseFormReturn<
@@ -27,9 +32,25 @@ type PostFormProps = {
   >;
   submitHandler: any;
   isFormLoading: boolean;
+  content: any[];
+  setContent: any;
 };
 
-const PostForm = ({ form, submitHandler, isFormLoading }: PostFormProps) => {
+const PostForm = ({
+  form,
+  submitHandler,
+  isFormLoading,
+  content,
+  setContent
+}: PostFormProps) => {
+  useInitializeVideoPlugin();
+
+  const handleAddBlock = (block: any) => {
+    setContent((prevContent: any) => [...prevContent, block]);
+  };
+
+  const { plugins } = usePlugins();
+
   return (
     <>
       <Form {...form}>
@@ -82,6 +103,21 @@ const PostForm = ({ form, submitHandler, isFormLoading }: PostFormProps) => {
               </FormItem>
             )}
           />
+
+          <div className="flex flex-col gap-10">
+            <div>
+              {content?.map((block) => {
+                const plugin = plugins.find((p) => p.name === block.name);
+                return (
+                  <div key={block.name + Math.random()}>
+                    {plugin?.render(block.data)}
+                  </div>
+                );
+              })}
+            </div>
+
+            <EditorToolbar onAddBlock={handleAddBlock} />
+          </div>
 
           <Button type="submit" className="w-full" disabled={isFormLoading}>
             Submit

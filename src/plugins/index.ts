@@ -1,2 +1,2 @@
 // Automatically registers plugins here
-import "./videoPlugin";
+// import "./videoPlugin";

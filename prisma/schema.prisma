@@ -18,6 +18,7 @@ model Post {
   title     String
   slug      String   @unique
   content   Json     @default("[]") // Content blocks in JSON format
+  pluginContent   Json     @default("[]") // Plugin Content blocks in JSON format
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

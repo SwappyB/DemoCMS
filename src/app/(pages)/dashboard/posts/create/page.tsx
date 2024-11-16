@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
@@ -18,6 +19,8 @@ const CreatePost = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
+  const [pluginContent, setPluginContent] = useState<any[]>([]);
+
   const form = useForm<z.infer<typeof postFormSchema>>({
     resolver: zodResolver(postFormSchema),
     defaultValues: {
@@ -36,7 +39,8 @@ const CreatePost = () => {
         body: JSON.stringify({
           title: values.title,
           slug: values.slug,
-          content: values.content
+          content: values.content,
+          pluginContent: pluginContent
         }),
         headers: { "Content-Type": "application/json" }
       });
@@ -77,6 +81,8 @@ const CreatePost = () => {
               form={form}
               submitHandler={onSubmit}
               isFormLoading={isLoading}
+              content={pluginContent}
+              setContent={setPluginContent}
             />
           </div>
         </div>

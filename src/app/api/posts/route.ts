@@ -36,16 +36,17 @@ export async function GET() {
 // Create Post
 export async function POST(request: NextRequest) {
     try {
-        const { title, slug, content } = await request.json();
+        const { title, slug, content, pluginContent } = await request.json();
 
         /**
          * Generate unique slug
          * Create new post
          */
 
+        // TODO: Unique slug
         const newSlug = slugify(slug || title);
 
-        const newPost = await db.post.create({ data: { title, slug: newSlug, content } });
+        const newPost = await db.post.create({ data: { title, slug: newSlug, content, pluginContent: JSON.stringify(pluginContent) } });
 
         return Response.json({
             success: true,

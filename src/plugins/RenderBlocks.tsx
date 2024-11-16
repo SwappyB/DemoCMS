@@ -1,37 +1,39 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { getPlugins } from "@/plugins/pluginManager";
+// "use client";
 
-type Block = {
-  type: string;
-  data: any;
-};
+// /* eslint-disable @typescript-eslint/no-explicit-any */
+// import { usePlugins } from "@/plugins/PluginContext";
 
-/**
- * Rendering plugin blocks
- * @param param0 blocks = content blocks for the plugin
- * @returns Html for the plugin blocks
- */
-const RenderBlocks = ({ blocks }: { blocks: Block[] }) => {
-  const plugins = getPlugins();
+// type Block = {
+//   type: string;
+//   data: any;
+// };
 
-  return (
-    <div>
-      {blocks.map((block, index) => {
-        const plugin = plugins.find((p) =>
-          p.blocks?.find((b) => b.type === block.type)
-        );
-        const renderer = plugin?.blocks?.find(
-          (b) => b.type === block.type
-        )?.render;
+// /**
+//  * Rendering plugin blocks
+//  * @param param0 blocks = content blocks for the plugin
+//  * @returns Html for the plugin blocks
+//  */
+// const RenderBlocks = ({ blocks }: { blocks: Block[] }) => {
+//   const { plugins } = usePlugins();
 
-        return renderer ? (
-          <div key={index}>{renderer(block.data)}</div>
-        ) : (
-          <p key={index}>Unknown block type: {block.type}</p>
-        );
-      })}
-    </div>
-  );
-};
+//   return (
+//     <div>
+//       {blocks.map((block, index) => {
+//         const plugin = plugins.find((p) =>
+//           p.blocks?.find((b) => b.type === block.type)
+//         );
+//         const renderer = plugin?.blocks?.find(
+//           (b) => b.type === block.type
+//         )?.render;
 
-export default RenderBlocks;
+//         return renderer ? (
+//           <div key={index}>{renderer(block.data)}</div>
+//         ) : (
+//           <p key={index}>Unknown block type: {block.type}</p>
+//         );
+//       })}
+//     </div>
+//   );
+// };
+
+// export default RenderBlocks;
