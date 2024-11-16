@@ -12,3 +12,8 @@ export function generateRandomId(length = 16) {
     .map(b => b.toString(16).padStart(2, '0'))
     .join('');
 };
+
+export const isValidUrl = (url: string): boolean => {
+  const urlRegex = /^(https?:\/\/)?([\w\-]+(\.[\w\-]+)+)([\/\w\-?=&%.]*)?$/i;
+  return urlRegex.test(url);
+};

@@ -15,9 +15,14 @@ import { useToast } from "@/hooks/use-toast";
 import PostForm from "@/components/posts/PostForm";
 import { postFormSchema } from "@/components/posts/PostFormSchema";
 
+import { executeHooks } from "@/plugins/hooks";
+import { usePlugins } from "@/plugins/PluginContext";
+
 const CreatePost = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+
+  const { hooks, plugins } = usePlugins();
 
   const [pluginContent, setPluginContent] = useState<any[]>([]);
 
@@ -33,6 +38,9 @@ const CreatePost = () => {
   async function onSubmit(values: z.infer<typeof postFormSchema>) {
     try {
       setIsLoading(true);
+
+      // Execute "onSave" hooks before saving to validate URL
+      await executeHooks(hooks, "onSave", plugins, pluginContent);
 
       const result = await fetch("/api/posts", {
         method: "POST",
@@ -60,9 +68,14 @@ const CreatePost = () => {
       }
     } catch (error) {
       console.log(error);
+      let errorMessage = "Something went wrong!";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
       toast({
         title: "Oh, No!",
-        description: "Something went wrong!",
+        description: errorMessage,
         variant: "destructive"
       });
     } finally {

@@ -9,6 +9,8 @@ type VideoBlockData = {
 };
 
 import VideoBlockEditor from "./VideoBlockEditor";
+import { PluginHooks } from "@/types/hooks";
+import { isValidUrl } from "@/lib/utils";
 
 export const PluginName = "Video Frame";
 
@@ -34,13 +36,21 @@ export const useInitializeVideoPlugin = () => {
       render: renderVideoBlock,
       editorComponent: VideoBlockEditor,
       hooks: {
-        beforeSave: (args) => {
-          console.log("Video Plugin: Before Save Hook", args);
-        },
-        afterRender: (args) => {
-          console.log("Video Plugin: After Render Hook", args);
-        }
-      }
+        onSave: [
+          {
+            name: "Validate Video URL",
+            handler: (data: any) => {
+              console.log("Validating video URL with data:", data.videoUrl);
+
+              if (!isValidUrl(data.videoUrl)) {
+                throw new Error(
+                  `Invalid URL For Video Frame: "${data.videoUrl}"`
+                );
+              }
+            }
+          }
+        ]
+      } as PluginHooks
     });
   }, [registerPlugin]);
 };
