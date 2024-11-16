@@ -4,7 +4,7 @@ import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-import { getPosts } from "./_actions/_actions";
+import { getPosts } from "./_actions/getPostData";
 
 import RenderPostList from "./_components/RenderPostList";
 

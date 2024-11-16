@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import * as React from "react";
@@ -32,11 +33,11 @@ import {
   TableRow
 } from "@/components/ui/table";
 
-import type { Post } from "@/types";
+import type { Post, Page } from "@/types";
 
 type TableProps = {
-  data: Post[];
-  columns: ColumnDef<Post>[];
+  data: Post[] | Page[];
+  columns: ColumnDef<any>[];
 };
 
 export function DataTable({ data, columns }: TableProps) {

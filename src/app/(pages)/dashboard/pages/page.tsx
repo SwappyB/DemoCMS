@@ -4,7 +4,12 @@ import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-const page = () => {
+import { getPages } from "./_actions/getPageData";
+
+import RenderPageList from "./_components/RenderPageList";
+
+const page = async () => {
+  const pageData = await getPages();
   return (
     <div>
       <MaxWidthWrapper className="pb-2 pt-3 sm:pb-32 lg:pt-4 xl:pt-6 lg:pb-52">
@@ -14,6 +19,7 @@ const page = () => {
             <Button variant="outline">Create new</Button>
           </Link>
         </div>
+        <RenderPageList data={pageData} />
       </MaxWidthWrapper>
     </div>
   );
