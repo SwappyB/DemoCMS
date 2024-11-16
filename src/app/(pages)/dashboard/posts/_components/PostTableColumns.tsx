@@ -20,7 +20,13 @@ import type { Post } from "@/types";
 
 import { format } from "date-fns";
 
-export const columns: ColumnDef<Post>[] = [
+type PostTableColumnProps = {
+  deletePostHandler: (slug: string) => void;
+};
+
+export const getPostTableColumns = ({
+  deletePostHandler
+}: PostTableColumnProps): ColumnDef<Post>[] => [
   {
     accessorKey: "id",
     header: ({ column }) => {
@@ -102,6 +108,11 @@ export const columns: ColumnDef<Post>[] = [
             <a href={`/posts/${post.slug}`}>
               <DropdownMenuItem>Open Post</DropdownMenuItem>
             </a>
+            <DropdownMenuItem
+              onClick={() => deletePostHandler(post.id.toString())}
+            >
+              Delete Post
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

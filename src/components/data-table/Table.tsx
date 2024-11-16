@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import {
+  ColumnDef,
   ColumnFiltersState,
   SortingState,
   VisibilityState,
@@ -14,7 +15,6 @@ import {
 } from "@tanstack/react-table";
 import { ChevronDown } from "lucide-react";
 
-import { columns } from "./columns";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -34,11 +34,12 @@ import {
 
 import type { Post } from "@/types";
 
-type PostTableType = {
+type TableProps = {
   data: Post[];
+  columns: ColumnDef<Post>[];
 };
 
-export function PostTable({ data }: PostTableType) {
+export function DataTable({ data, columns }: TableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -70,7 +71,7 @@ export function PostTable({ data }: PostTableType) {
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter posts..."
+          placeholder="Search"
           value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("title")?.setFilterValue(event.target.value)
@@ -155,10 +156,6 @@ export function PostTable({ data }: PostTableType) {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
         <div className="space-x-2">
           <Button
             variant="outline"

@@ -4,9 +4,9 @@ import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-import { PostTable } from "@/components/data-table/Posts";
-
 import { getPosts } from "./_actions/_actions";
+
+import RenderPostList from "./_components/RenderPostList";
 
 const Posts = async () => {
   const postData = await getPosts();
@@ -19,7 +19,7 @@ const Posts = async () => {
             <Button variant="outline">Create new</Button>
           </Link>
         </div>
-        <PostTable data={postData} />
+        <RenderPostList data={postData} />
       </MaxWidthWrapper>
     </div>
   );
