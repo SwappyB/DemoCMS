@@ -10,9 +10,12 @@ import {
 
 import Link from "next/link";
 
-export default function Home() {
+import { getContentCount } from "@/server/service/pageService";
+
+export default async function Home() {
+  const contentCount = await getContentCount();
   return (
-    <div className="bg-slate-50 grainy-light">
+    <div className="grainy-light">
       <section>
         <MaxWidthWrapper className="pb-2 pt-3 sm:pb-32 lg:pt-4 xl:pt-6 lg:pb-52">
           <p className="text-5xl">Dashboard</p>
@@ -24,7 +27,7 @@ export default function Home() {
                   <CardDescription>Create and edit pages here</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p>2 Pages</p>
+                  <p>{contentCount.totalPages} Pages</p>
                 </CardContent>
               </Card>
             </Link>
@@ -35,7 +38,7 @@ export default function Home() {
                   <CardDescription>Create and edit posts here</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p>24 Posts</p>
+                  <p>{contentCount.totalPosts} Posts</p>
                 </CardContent>
               </Card>
             </Link>
