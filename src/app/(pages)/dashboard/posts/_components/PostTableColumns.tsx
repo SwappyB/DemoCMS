@@ -108,9 +108,7 @@ export const getPostTableColumns = ({
             <a href={`/posts/${post.slug}`}>
               <DropdownMenuItem>Open Post</DropdownMenuItem>
             </a>
-            <DropdownMenuItem
-              onClick={() => deletePostHandler(post.id.toString())}
-            >
+            <DropdownMenuItem onClick={() => deletePostHandler(post.slug)}>
               Delete Post
             </DropdownMenuItem>
           </DropdownMenuContent>

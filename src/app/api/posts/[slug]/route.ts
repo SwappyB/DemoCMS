@@ -1,7 +1,9 @@
 import { db } from "@/db/prisma";
 
 // Delete post
-export async function DELETE({ params }: { params: { slug: string } }) {
+export async function DELETE(
+    request: Request,
+    { params }: { params: { slug: string } }) {
     try {
         const postSlug = params.slug;
 
