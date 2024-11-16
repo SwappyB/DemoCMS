@@ -7,11 +7,16 @@ import RenderEditorContent from "@/components/WYSIWYG/RenderContent";
 import RenderBlocks from "@/plugins/RenderBlocks";
 import PluginInit from "./_components/plugin";
 
-const PostPage = async ({ params }: { params: { slug: string } }) => {
-  const postData = await getPostData(params?.slug);
+type tParams = Promise<{ slug: string[] }>;
+
+const PostPage = async ({ params }: { params: tParams }) => {
+  const { slug } = await params;
+  const postData = await getPostData(slug[0]);
 
   const pluginData =
-    postData?.pluginContent && postData?.pluginContent.length
+    postData?.pluginContent &&
+    typeof postData.pluginContent === "string" &&
+    postData?.pluginContent.length
       ? JSON.parse(postData?.pluginContent as string)
       : [];
 

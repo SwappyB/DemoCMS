@@ -7,9 +7,11 @@ import getPostData from "./_actions/getPostData";
 
 import EditForm from "./_components/EditForm";
 
-const EditPost = async ({ params }: { params: { slug: string } }) => {
-  const { slug } = params;
-  const postData = await getPostData(slug);
+type tParams = Promise<{ slug: string[] }>;
+
+const EditPost = async ({ params }: { params: tParams }) => {
+  const { slug } = await params;
+  const postData = await getPostData(slug[0]);
 
   return (
     <div>

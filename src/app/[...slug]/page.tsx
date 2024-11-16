@@ -5,14 +5,12 @@ import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import RenderEditorContent from "@/components/WYSIWYG/RenderContent";
 import RenderBlocks from "@/plugins/RenderBlocks";
 import PluginInit from "./_components/plugin";
+type tParams = Promise<{ slug: string[] }>;
 
-export default async function DynamicPage({
-  params
-}: {
-  params: { slug: string[] };
-}) {
+export default async function DynamicPage({ params }: { params: tParams }) {
+  const { slug } = await params;
   // Convert the slug array into a route string
-  const route = `/${params.slug.join("/")}`;
+  const route = `/${slug.join("/")}`;
 
   // Fetch the page from the database
   const pageData = await db.page.findUnique({
@@ -24,7 +22,9 @@ export default async function DynamicPage({
   }
 
   const pluginData =
-    pageData?.pluginContent && pageData?.pluginContent.length
+    pageData?.pluginContent &&
+    typeof pageData.pluginContent === "string" &&
+    pageData?.pluginContent.length
       ? JSON.parse(pageData?.pluginContent as string)
       : [];
 
