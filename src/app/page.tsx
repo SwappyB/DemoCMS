@@ -28,7 +28,6 @@ export default function Home() {
                 </CardContent>
               </Card>
             </Link>
-
             <Link href={"/dashboard/posts"}>
               <Card>
                 <CardHeader>
@@ -37,20 +36,6 @@ export default function Home() {
                 </CardHeader>
                 <CardContent>
                   <p>24 Posts</p>
-                </CardContent>
-              </Card>
-            </Link>
-
-            <Link href={"/dashboard/plugins"}>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Plugins</CardTitle>
-                  <CardDescription>
-                    Create and edit plugins here
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p>Manage your plugins</p>
                 </CardContent>
               </Card>
             </Link>
