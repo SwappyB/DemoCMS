@@ -15,11 +15,16 @@ import { useToast } from "@/hooks/use-toast";
 import PageForm from "@/components/pages/PageForm";
 import { pageFormSchema } from "@/components/pages/PageFormSchema";
 
+import { executeHooks } from "@/plugins/hooks";
+import { usePlugins } from "@/plugins/PluginContext";
+
 const CreatePage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
   const [pluginContent, setPluginContent] = useState<any[]>([]);
+
+  const { hooks, plugins } = usePlugins();
 
   const form = useForm<z.infer<typeof pageFormSchema>>({
     resolver: zodResolver(pageFormSchema),
@@ -34,6 +39,8 @@ const CreatePage = () => {
   async function onSubmit(values: z.infer<typeof pageFormSchema>) {
     try {
       setIsLoading(true);
+
+      await executeHooks(hooks, "onSave", plugins, pluginContent);
 
       const result = await fetch("/api/pages", {
         method: "POST",
@@ -62,9 +69,14 @@ const CreatePage = () => {
       }
     } catch (error) {
       console.log(error);
+      let errorMessage = "Something went wrong!";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
       toast({
         title: "Oh, No!",
-        description: "Something went wrong!",
+        description: errorMessage,
         variant: "destructive"
       });
     } finally {

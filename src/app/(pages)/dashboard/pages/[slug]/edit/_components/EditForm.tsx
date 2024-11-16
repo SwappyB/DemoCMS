@@ -14,6 +14,9 @@ import PageForm from "@/components/pages/PageForm";
 
 import type { Page } from "@/types";
 
+import { executeHooks } from "@/plugins/hooks";
+import { usePlugins } from "@/plugins/PluginContext";
+
 type EditPageProps = {
   data: Page | null;
 };
@@ -21,6 +24,8 @@ type EditPageProps = {
 const EditForm = ({ data }: EditPageProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+
+  const { hooks, plugins } = usePlugins();
 
   const [pluginContent, setPluginContent] = useState<any[]>(
     data?.pluginContent && data?.pluginContent.length
@@ -41,6 +46,8 @@ const EditForm = ({ data }: EditPageProps) => {
   async function onSubmit(values: z.infer<typeof pageFormSchema>) {
     try {
       setIsLoading(true);
+
+      await executeHooks(hooks, "onSave", plugins, pluginContent);
 
       const result = await fetch("/api/pages", {
         method: "PATCH",
@@ -69,9 +76,14 @@ const EditForm = ({ data }: EditPageProps) => {
       }
     } catch (error) {
       console.log(error);
+      let errorMessage = "Something went wrong!";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
       toast({
         title: "Oh, No!",
-        description: "Something went wrong!",
+        description: errorMessage,
         variant: "destructive"
       });
     } finally {

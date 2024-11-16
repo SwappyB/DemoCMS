@@ -14,6 +14,9 @@ import PostForm from "@/components/posts/PostForm";
 
 import type { Post } from "@/types";
 
+import { executeHooks } from "@/plugins/hooks";
+import { usePlugins } from "@/plugins/PluginContext";
+
 type EditPostProps = {
   data: Post | null;
 };
@@ -21,6 +24,8 @@ type EditPostProps = {
 const EditForm = ({ data }: EditPostProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+
+  const { hooks, plugins } = usePlugins();
 
   const [pluginContent, setPluginContent] = useState<any[]>(
     data?.pluginContent && data?.pluginContent.length
@@ -40,6 +45,8 @@ const EditForm = ({ data }: EditPostProps) => {
   async function onSubmit(values: z.infer<typeof postFormSchema>) {
     try {
       setIsLoading(true);
+
+      await executeHooks(hooks, "onSave", plugins, pluginContent);
 
       const result = await fetch("/api/posts", {
         method: "PATCH",
@@ -67,9 +74,14 @@ const EditForm = ({ data }: EditPostProps) => {
       }
     } catch (error) {
       console.log(error);
+      let errorMessage = "Something went wrong!";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
       toast({
         title: "Oh, No!",
-        description: "Something went wrong!",
+        description: errorMessage,
         variant: "destructive"
       });
     } finally {
