@@ -70,7 +70,7 @@ const EditForm = ({ data }: EditPageProps) => {
       } else {
         toast({
           title: "Oh, No!",
-          description: res.data.message,
+          description: res.message,
           variant: "destructive"
         });
       }

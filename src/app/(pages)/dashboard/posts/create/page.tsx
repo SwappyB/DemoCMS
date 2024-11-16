@@ -62,7 +62,7 @@ const CreatePost = () => {
         console.log(res);
         toast({
           title: "Oh, No!",
-          description: res.data.message,
+          description: res.message,
           variant: "destructive"
         });
       }

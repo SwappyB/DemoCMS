@@ -1,17 +1,13 @@
 import { NextRequest } from "next/server";
 import { db } from "@/db/prisma";
-import { slugify } from "@/lib/slugify";
+import { generateUniqueSlug } from "@/lib/slugify";
+
+import { getPostBySlug } from "@/server/service/postService";
 
 
 // Get Post
 export async function GET() {
     try {
-
-        /**
-         * Generate unique slug
-         * Create new post
-         */
-
         const allPosts = await db.post.findMany({
             orderBy: {
                 createdAt: "desc",
@@ -43,8 +39,18 @@ export async function POST(request: NextRequest) {
          * Create new post
          */
 
-        // TODO: Unique slug
-        const newSlug = slugify(slug || title);
+        if (slug) {
+            const isSlugExists = await getPostBySlug(slug);
+            if (isSlugExists) {
+                return Response.json({
+                    success: false,
+                    status: 200,
+                    message: `${slug} is already in use.`,
+                })
+            }
+        }
+
+        const newSlug = slug || await generateUniqueSlug(title);
 
         const newPost = await db.post.create({ data: { title, slug: newSlug, content, pluginContent: JSON.stringify(pluginContent) } });
 
@@ -69,7 +75,18 @@ export async function PATCH(request: NextRequest) {
     try {
         const { title, slug, content, id, pluginContent } = await request.json();
 
-        const newSlug = slugify(slug || title);
+        const newSlug = slug || await generateUniqueSlug(title);
+
+        if (slug) {
+            const isSlugExists = await db.post.findUnique({ where: { slug, NOT: { id } } });
+            if (isSlugExists) {
+                return Response.json({
+                    success: false,
+                    status: 200,
+                    message: `${slug} is already in use.`,
+                })
+            }
+        }
 
         const postUpdate = await db.post.update({ where: { id }, data: { title, slug: newSlug, content, pluginContent: JSON.stringify(pluginContent) } });
 

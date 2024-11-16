@@ -1,19 +1,35 @@
 import { NextRequest } from "next/server";
 import { db } from "@/db/prisma";
-import { slugify } from "@/lib/slugify";
+import { generateUniqueSlug } from "@/lib/slugify";
+import { getPageBySlug } from "@/server/service/pageService";
 
 // Create Page
 export async function POST(request: NextRequest) {
     try {
         const { title, slug, route, content, pluginContent } = await request.json();
 
-        /**
-         * Generate unique slug
-         * Create new page
-         */
+        if (slug) {
+            const isSlugExists = await getPageBySlug(slug);
+            if (isSlugExists) {
+                return Response.json({
+                    success: false,
+                    status: 200,
+                    message: `${slug} is already in use.`,
+                })
+            }
+        }
 
-        // TODO: Unique slug
-        const newSlug = slugify(slug || title);
+        const newSlug = slug || await generateUniqueSlug(title, "page");
+
+        const isRouteInUse = await db.page.findUnique({ where: { route } });
+        if (isRouteInUse) {
+            return Response.json({
+                success: false,
+                status: 200,
+                message: `${route} is already in use.`,
+            })
+        }
+
 
         const newPage = await db.page.create({ data: { title, slug: newSlug, content, pluginContent: JSON.stringify(pluginContent), route } });
 
@@ -38,7 +54,27 @@ export async function PATCH(request: NextRequest) {
     try {
         const { title, slug, route, content, id, pluginContent } = await request.json();
 
-        const newSlug = slugify(slug || title);
+        const newSlug = slug || await generateUniqueSlug(title, "page");
+
+        if (slug) {
+            const isSlugExists = await db.page.findUnique({ where: { slug, NOT: { id } } });
+            if (isSlugExists) {
+                return Response.json({
+                    success: false,
+                    status: 200,
+                    message: `${slug} is already in use.`,
+                })
+            }
+        }
+
+        const isRouteInUse = await db.page.findUnique({ where: { route, NOT: { id } } });
+        if (isRouteInUse) {
+            return Response.json({
+                success: false,
+                status: 200,
+                message: `${route} is already in use.`,
+            })
+        }
 
         const pageUpdate = await db.page.update({ where: { id }, data: { title, slug: newSlug, route, content, pluginContent: JSON.stringify(pluginContent) } });
 
