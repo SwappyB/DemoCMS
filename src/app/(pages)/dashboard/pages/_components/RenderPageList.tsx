@@ -35,7 +35,7 @@ const RenderPageList = ({ data }: RenderPageListProps) => {
 
   const deletePageHandler = async () => {
     try {
-      const result = await fetch(`/api/posts/${deletePageSlug}`, {
+      const result = await fetch(`/api/pages/${deletePageSlug}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" }
       });
