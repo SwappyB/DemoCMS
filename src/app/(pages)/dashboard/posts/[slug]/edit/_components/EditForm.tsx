@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
@@ -21,6 +22,12 @@ const EditForm = ({ data }: EditPostProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
+  const [pluginContent, setPluginContent] = useState<any[]>(
+    data?.pluginContent && data?.pluginContent.length
+      ? JSON.parse(data?.pluginContent)
+      : []
+  );
+
   const form = useForm<z.infer<typeof postFormSchema>>({
     resolver: zodResolver(postFormSchema),
     defaultValues: {
@@ -40,7 +47,8 @@ const EditForm = ({ data }: EditPostProps) => {
           id: data?.id,
           title: values.title,
           slug: values.slug,
-          content: values.content
+          content: values.content,
+          pluginContent
         }),
         headers: { "Content-Type": "application/json" }
       });
@@ -75,6 +83,8 @@ const EditForm = ({ data }: EditPostProps) => {
         form={form}
         submitHandler={onSubmit}
         isFormLoading={isLoading}
+        content={pluginContent}
+        setContent={setPluginContent}
       />
     </div>
   );

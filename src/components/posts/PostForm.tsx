@@ -49,6 +49,12 @@ const PostForm = ({
     setContent((prevContent: any) => [...prevContent, block]);
   };
 
+  const handleRemoveBlock = (block: any) => {
+    setContent((prevItems: any) =>
+      prevItems.filter((item: any) => item.id !== block.id)
+    );
+  };
+
   const { plugins } = usePlugins();
 
   return (
@@ -105,11 +111,21 @@ const PostForm = ({
           />
 
           <div className="flex flex-col gap-10">
-            <div>
+            <div className="flex flex-col gap-10">
               {content?.map((block) => {
                 const plugin = plugins.find((p) => p.name === block.name);
                 return (
-                  <div key={block.name + Math.random()}>
+                  <div key={block.name + block.id + Math.random()}>
+                    <Button
+                      className="mt-2"
+                      type="button"
+                      variant={"link"}
+                      onClick={() => {
+                        handleRemoveBlock(block);
+                      }}
+                    >
+                      Remove this plugin
+                    </Button>
                     {plugin?.render(block.data)}
                   </div>
                 );

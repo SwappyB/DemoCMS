@@ -5,6 +5,8 @@ import { useState } from "react";
 
 import { PluginName } from ".";
 
+import { generateRandomId } from "@/lib/utils";
+
 const VideoBlockEditor: React.FC<{ onAddBlock: (block: any) => void }> = ({
   onAddBlock
 }) => {
@@ -13,6 +15,7 @@ const VideoBlockEditor: React.FC<{ onAddBlock: (block: any) => void }> = ({
   const handleAddVideo = () => {
     if (videoUrl.trim()) {
       onAddBlock({
+        id: generateRandomId(),
         name: PluginName,
         data: { videoUrl }
       });

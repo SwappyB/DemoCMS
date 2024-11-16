@@ -67,11 +67,11 @@ export async function POST(request: NextRequest) {
 // Update Post
 export async function PATCH(request: NextRequest) {
     try {
-        const { title, slug, content, id } = await request.json();
+        const { title, slug, content, id, pluginContent } = await request.json();
 
         const newSlug = slugify(slug || title);
 
-        const postUpdate = await db.post.update({ where: { id }, data: { title, slug: newSlug, content } });
+        const postUpdate = await db.post.update({ where: { id }, data: { title, slug: newSlug, content, pluginContent: JSON.stringify(pluginContent) } });
 
         return Response.json({
             success: true,

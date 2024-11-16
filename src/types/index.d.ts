@@ -5,6 +5,7 @@ export interface Post {
     title: string;
     slug: string;
     content: any;
+    pluginContent: any;
     template?: string;
     createdAt: Date;
     updatedAt: Date;
