@@ -37,7 +37,7 @@ type PageFormProps = {
   setContent: any;
 };
 
-const PostForm = ({
+const PageForm = ({
   form,
   submitHandler,
   isFormLoading,
@@ -150,7 +150,7 @@ const PostForm = ({
             <EditorToolbar onAddBlock={handleAddBlock} />
           </div>
           <Button type="submit" disabled={isFormLoading}>
-            Create New Page
+            Submit
           </Button>
         </form>
       </Form>
@@ -158,4 +158,4 @@ const PostForm = ({
   );
 };
 
-export default PostForm;
+export default PageForm;

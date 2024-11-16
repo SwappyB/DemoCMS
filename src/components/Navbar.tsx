@@ -37,13 +37,13 @@ const Navbar = async () => {
               <div className="h-8 w-px bg-zinc-200 hidden sm:block" />
 
               <Link
-                href="/configure/upload"
+                href="/dashboard/posts/create"
                 className={buttonVariants({
                   size: "sm",
                   className: "hidden sm:flex items-center gap-1"
                 })}
               >
-                Create case
+                Create post
                 <ArrowRight className="ml-1.5 h-5 w-5" />
               </Link>
             </>
