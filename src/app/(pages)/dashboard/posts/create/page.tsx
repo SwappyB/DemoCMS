@@ -4,38 +4,22 @@ import { useState } from "react";
 
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import { Separator } from "@/components/ui/separator";
-import { Input } from "@/components/ui/input";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from "@/components/ui/form";
-
-import WysiwygEditor from "@/components/WYSIWYG/Editor";
 
 import { useToast } from "@/hooks/use-toast";
 
-const formSchema = z.object({
-  title: z.string().min(3, { message: "A title is required for the post." }),
-  slug: z.string(),
-  content: z.any()
-});
+import PostForm from "@/components/posts/PostForm";
+import { postFormSchema } from "@/components/posts/PostFormSchema";
 
 const CreatePost = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof postFormSchema>>({
+    resolver: zodResolver(postFormSchema),
     defaultValues: {
       title: "",
       slug: "",
@@ -43,7 +27,7 @@ const CreatePost = () => {
     }
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof postFormSchema>) {
     try {
       setIsLoading(true);
 
@@ -89,65 +73,11 @@ const CreatePost = () => {
           <p className="text-sm">Creating new post</p>
           <Separator />
           <div>
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-8"
-              >
-                <FormField
-                  control={form.control}
-                  name="title"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Title</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormDescription>
-                        Enter a title for the new post
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="slug"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Slug</FormLabel>
-                      <FormControl>
-                        <div>
-                          <Input type="text" {...field} />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="content"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Content</FormLabel>
-                      <FormControl>
-                        <WysiwygEditor
-                          initialContent={field.value}
-                          onChange={field.onChange}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <Button type="submit" className="w-full" disabled={isLoading}>
-                  Submit
-                </Button>
-              </form>
-            </Form>
+            <PostForm
+              form={form}
+              submitHandler={onSubmit}
+              isFormLoading={isLoading}
+            />
           </div>
         </div>
       </MaxWidthWrapper>

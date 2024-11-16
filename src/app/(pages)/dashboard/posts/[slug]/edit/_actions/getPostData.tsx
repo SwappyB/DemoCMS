@@ -1,11 +1,9 @@
 "use server";
 
-import { db } from "@/db/prisma";
+import { getPostBySlug } from "@/server/service/postService";
 
 const getPostData = async (slug: string) => {
-  const postData = await db.post.findUnique({ where: { slug } });
-
-  return postData;
+  return await getPostBySlug(slug);
 };
 
 export default getPostData;

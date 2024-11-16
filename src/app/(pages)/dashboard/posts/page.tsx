@@ -6,11 +6,10 @@ import Link from "next/link";
 
 import { PostTable } from "@/components/data-table/Posts";
 
-import { getPosts } from "./_actions";
+import { getPosts } from "./_actions/_actions";
 
 const Posts = async () => {
   const postData = await getPosts();
-  console.log(postData);
   return (
     <div>
       <MaxWidthWrapper className="pb-2 pt-3 sm:pb-32 lg:pt-4 xl:pt-6 lg:pb-52">
