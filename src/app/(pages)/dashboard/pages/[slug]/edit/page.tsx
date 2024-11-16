@@ -7,11 +7,11 @@ import getPageData from "./_actions/getPageData";
 
 import EditForm from "./_components/EditForm";
 
-type tParams = Promise<{ slug: string[] }>;
+type tParams = Promise<{ slug: string }>;
 
 const EditPost = async ({ params }: { params: tParams }) => {
   const { slug } = await params;
-  const pageData = await getPageData(slug[0]);
+  const pageData = await getPageData(slug);
 
   return (
     <div>

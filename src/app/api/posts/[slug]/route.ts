@@ -1,6 +1,6 @@
 import { db } from "@/db/prisma";
 
-type tParams = Promise<{ slug: string[] }>;
+type tParams = Promise<{ slug: string }>;
 
 // Delete post
 export async function DELETE(
@@ -8,9 +8,8 @@ export async function DELETE(
     { params }: { params: tParams }) {
     try {
         const { slug } = await params;
-        const postSlug = slug[0];
 
-        const deletePost = await db.post.delete({ where: { slug: postSlug } })
+        const deletePost = await db.post.delete({ where: { slug } })
 
         return Response.json({
             success: true,
