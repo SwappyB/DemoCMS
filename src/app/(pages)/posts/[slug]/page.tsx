@@ -9,7 +9,6 @@ import PluginInit from "./_components/plugin";
 
 const PostPage = async ({ params }: { params: { slug: string } }) => {
   const postData = await getPostData(params?.slug);
-  console.log(postData);
 
   const pluginData =
     postData?.pluginContent && postData?.pluginContent.length

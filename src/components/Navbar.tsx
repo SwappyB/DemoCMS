@@ -34,16 +34,6 @@ const Navbar = async () => {
                 Posts
               </Link>
 
-              <Link
-                href="/api/auth/login"
-                className={buttonVariants({
-                  size: "sm",
-                  variant: "ghost"
-                })}
-              >
-                Plugins
-              </Link>
-
               <div className="h-8 w-px bg-zinc-200 hidden sm:block" />
 
               <Link
