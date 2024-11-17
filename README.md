@@ -66,79 +66,116 @@ The app will run at http://localhost:3000
 
 ## **7. Add Your First Plugin**
 
+Let's create a new Image plugin.
+
 ### **Register a Plugin**
 
-To add a plugin, go to the `plugins` folder and create a new file, e.g., `imagePlugin.ts`:
+To add a plugin, go to the `plugins` folder and create a new folder `imagePlugin`, and create `index.tsx` file in it.
 
-    import { Plugin } from "@/types/plugin";
+    "use client";
+    import { useRegisterPlugin } from "@/plugins/PluginContext";
+    import { useEffect } from "react";
+    import { Plugin } from "@/types/hooks";
+    import Image from "next/image";
 
-    export const ImageViewerPlugin: Plugin = {
-      name: "imageViewer",
-      editorComponent: ({ data, setData }) => (
-        <div>
-          <input
-            type="text"
-            placeholder="Enter Image URL"
-            value={data.url || ""}
-            onChange={(e) => setData({ ...data, url: e.target.value })}
-            style={{ marginBottom: "10px", width: "100%" }}
+    type ImageBlockData = {
+      url: string;
+      alt: string;
+    };
+
+    import ImagePluginEditor from "./ImagePluginEditor";
+    export const PluginName = "Image";
+
+    const renderImageBlock = (data: ImageBlockData) => {
+      return (
+        <>
+          <Image
+            src={data.url}
+            alt={data.alt || "Image"}
+            width={500}
+            height={500}
           />
-          <input
-            type="text"
-            placeholder="Enter Alt Text"
-            value={data.alt || ""}
-            onChange={(e) => setData({ ...data, alt: e.target.value })}
-            style={{ marginBottom: "10px", width: "100%" }}
-          />
-          {data.url && (
-            <div>
-              <p>Preview:</p>
-              <img
-                src={data.url}
-                alt={data.alt || "Image preview"}
-                style={{ maxWidth: "100%", maxHeight: "200px" }}
-              />
-            </div>
-          )}
-        </div>
-      ),
-      render: (data) => (
-        <img
-          src={data.url}
-          alt={data.alt || "Image"}
-          style={{ maxWidth: "100%", display: "block", margin: "auto" }}
-        />
-      ),
+        </>
+      );
+    };
+
+    // Creating image plugin
+    const ImagePlugin: Plugin = {
+      name: PluginName,
+      render: renderImageBlock,
+      editorComponent: ImagePluginEditor,
       hooks: {
         beforeSave: (data) => {
           if (!data.url) {
             throw new Error("Image URL is required.");
           }
           return data;
-        },
-      },
+        }
+      }
     };
 
-### **Register the Plugin in Context**
-
-To register this plugin in your CMS, use the `useRegisterPlugin` hook.
-
-Create a new file (or reuse the existing plugin registration setup) in the `plugins` folder:
+We also need to create an image plugin editor.
 
     "use client";
 
-    import { useRegisterPlugin } from "@/context/PluginContext";
-    import { ImageViewerPlugin } from "@/plugins/imageViewerPlugin";
-    import React from "react";
+    import { useState } from "react";
+    import { PluginName } from ".";
+    import { generateRandomId } from "@/lib/utils";
 
-    export const RegisterImageViewerPlugin = () => {
-      const registerPlugin = useRegisterPlugin();
+    const ImagePluginEditor: React.FC<{ onAddBlock: (block: any) => void }> = ({
+      onAddBlock
+    }) => {
+      const [imgUrl, setImgUrl] = useState("");
+      const [imgAlt, setImgAlt] = useState("");
 
-      React.useEffect(() => {
-        registerPlugin(ImageViewerPlugin);
+      const handleAddImage = () => {
+        if (imgUrl.trim()) {
+          onAddBlock({
+            id: generateRandomId(),
+            name: PluginName,
+            data: { url: imgUrl, alt: imgAlt }
+          });
+          setImgUrl("");
+        }
+      };
+
+      return (
+        <div>
+          <input
+            type="text"
+            placeholder="Enter Image URL"
+            value={imgUrl || ""}
+            onChange={(e) => setImgUrl(e.target.value)}
+            style={{ marginBottom: "10px", width: "100%" }}
+          />
+          <input
+            type="text"
+            placeholder="Enter Alt Text"
+            value={imgAlt || ""}
+            onChange={(e) => setImgAlt(e.target.value)}
+            style={{ marginBottom: "10px", width: "100%" }}
+          />
+          <button onClick={handleAddImage} type="button">
+            Add Image
+          </button>
+        </div>
+      );
+    };
+
+    export default ImagePluginEditor;
+
+### Register the plugin
+
+To register this plugin in your CMS, use the `useRegisterPlugin` hook.
+
+Add this code in the `index.tsx` file in `imagePlugin` folder.
+
+    export const useInitialiseImagePlugin = () => {
+    const registerPlugin = useRegisterPlugin();
+
+      useEffect(() => {
+        registerPlugin(ImagePlugin);
       }, [registerPlugin]);
-
-      return null;
     };
 
 To auto initialise plugin, add the plugin in `plugins/index.tsx`
@@ -146,11 +183,14 @@ To auto initialise plugin, add the plugin in `plugins/index.tsx`
     "use client";
 
     import React from "react";
-    import { RegisterImageViewerPlugin } from "@/plugins/imageViewerPlugin";
+    import { useInitialiseVideoPlugin } from "@/plugins/videoPlugin";
+    import { useInitialiseImagePlugin } from "@/plugins/imagePlugin";
 
+    // Register and initialise new plugins here
     const PluginInit = () => {
-      // Other plugins will also be initialised here
-      RegisterImageViewerPlugin();
+      // Keep adding plugin init functions here
+      useInitialiseVideoPlugin();
+      useInitialiseImagePlugin();
       return <></>;
     };
 
@@ -160,6 +200,20 @@ To auto initialise plugin, add the plugin in `plugins/index.tsx`
 
 - **`beforeSave`**: Ensures the image URL is not empty before saving.
 - **`beforeRender`** (optional): Can be added if further processing (e.g., lazy loading) is needed before rendering.
+
+### Next Image Error
+
+Next.js throws error if we don't have the domain of the image url not saved in the config. You can always add the domain in the `next.config.ts`
+
+    import type { NextConfig } from "next";
+
+    const nextConfig: NextConfig = {
+      images: {
+        domains: ['image.example.com'],
+      },
+    };
+
+    export default nextConfig;
 
 ## **8. Create a Post**
 
