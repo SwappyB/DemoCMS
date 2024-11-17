@@ -5,6 +5,9 @@ import {
   RiCodeSSlashLine,
   RiListOrdered2
 } from "react-icons/ri";
+import { LuHeading1, LuHeading2, LuHeading3 } from "react-icons/lu";
+
+import {} from "react-icons";
 import { Editor } from "@tiptap/react";
 import { AiOutlineRedo, AiOutlineUndo } from "react-icons/ai";
 import { BsTypeUnderline } from "react-icons/bs";
@@ -60,6 +63,24 @@ export default function TextEditorMenuBar({
       onClick: () => editor.chain().focus().toggleStrike().run(),
       isActive: editor.isActive("strike"),
       disabled: !editor.can().chain().focus().toggleStrike().run()
+    },
+    {
+      icon: <LuHeading1 className="size-5" />,
+      onClick: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
+      isActive: editor.isActive("heading", { level: 1 }),
+      disabled: !editor.can().chain().focus().toggleHeading({ level: 1 }).run()
+    },
+    {
+      icon: <LuHeading2 className="size-5" />,
+      onClick: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
+      isActive: editor.isActive("heading", { level: 2 }),
+      disabled: !editor.can().chain().focus().toggleHeading({ level: 2 }).run()
+    },
+    {
+      icon: <LuHeading3 className="size-5" />,
+      onClick: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
+      isActive: editor.isActive("heading", { level: 3 }),
+      disabled: !editor.can().chain().focus().toggleHeading({ level: 3 }).run()
     },
     {
       icon: <RiCodeSSlashLine className="size-5" />,

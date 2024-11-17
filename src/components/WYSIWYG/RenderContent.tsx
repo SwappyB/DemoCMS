@@ -8,7 +8,12 @@ const RenderEditorContent = ({ content }: { content: any }) => {
   const editor = useEditor({
     extensions: [StarterKit],
     content,
-    editable: false
+    editable: false,
+    editorProps: {
+      attributes: {
+        class: "prose max-w-none [&_ol]:list-decimal [&_ul]:list-disc"
+      }
+    }
   });
 
   return (
