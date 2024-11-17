@@ -1,11 +1,5 @@
 import { db } from "../../db/prisma";
 
-export const getContentCount = async () => {
-    const totalPosts = await db.post.count();
-    const totalPages = await db.page.count();
-    return { totalPages, totalPosts }
-}
-
 export const getPageBySlug = async (slug: string) => {
     return db.page.findUnique({ where: { slug } });
 };

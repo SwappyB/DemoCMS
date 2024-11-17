@@ -2,7 +2,6 @@ import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle
@@ -10,12 +9,7 @@ import {
 
 import Link from "next/link";
 
-export const fetchCache = "force-no-store";
-
-import { getContentCount } from "@/server/service/pageService";
-
 export default async function Home() {
-  const contentCount = await getContentCount();
   return (
     <div className="grainy-light">
       <section>
@@ -28,9 +22,6 @@ export default async function Home() {
                   <CardTitle>Pages</CardTitle>
                   <CardDescription>Create and edit pages here</CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <p>{contentCount.totalPages} Pages</p>
-                </CardContent>
               </Card>
             </Link>
             <Link href={"/dashboard/posts"}>
@@ -39,9 +30,6 @@ export default async function Home() {
                   <CardTitle>Posts</CardTitle>
                   <CardDescription>Create and edit posts here</CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <p>{contentCount.totalPosts} Posts</p>
-                </CardContent>
               </Card>
             </Link>
           </div>
