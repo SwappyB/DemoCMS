@@ -10,6 +10,8 @@ import {
 
 import Link from "next/link";
 
+export const fetchCache = "force-no-store";
+
 import { getContentCount } from "@/server/service/pageService";
 
 export default async function Home() {
