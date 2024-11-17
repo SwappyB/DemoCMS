@@ -1,12 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { usePlugins } from "./PluginContext";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import type { Plugin } from "@/types/hooks";
 
-const RenderPluginForm = ({
+const RenderPluginEditorComponent = ({
   plugin,
   onAddBlock
 }: {
@@ -34,7 +35,7 @@ const EditorToolbar: React.FC<{ onAddBlock: (block: any) => void }> = ({
       <div className="text-3xl">Plugins</div>
 
       {currPlugin && (
-        <RenderPluginForm
+        <RenderPluginEditorComponent
           plugin={currPlugin as Plugin}
           onAddBlock={blockHandler}
         />

@@ -1,5 +1,6 @@
-"use client";
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+"use client";
 
 import { Plugin, HookName } from "@/types/hooks";
 import React, { createContext, useContext, useState, ReactNode } from "react";
@@ -22,7 +23,6 @@ export const PluginProvider = ({ children }: { children: ReactNode }) => {
   const registerPlugin = (plugin: Plugin) => {
     // Prevent duplicate registration
     if (plugins.find((p) => p.name === plugin.name)) return;
-
     setPlugins((prev) => [...prev, plugin]);
   };
 

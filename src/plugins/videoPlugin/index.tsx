@@ -13,8 +13,10 @@ type VideoBlockData = {
 import VideoBlockEditor from "./VideoBlockEditor";
 import { isValidUrl } from "@/lib/utils";
 
+// Unique name for the plugin
 export const PluginName = "Video Frame";
 
+// Render block to display the video component
 const renderVideoBlock = (data: VideoBlockData) => {
   return (
     <div className="video-block">
@@ -29,6 +31,7 @@ const renderVideoBlock = (data: VideoBlockData) => {
   );
 };
 
+// Creating video plugin
 const VideoPlugin: Plugin = {
   name: PluginName,
   render: renderVideoBlock,
@@ -56,7 +59,8 @@ const VideoPlugin: Plugin = {
   }
 };
 
-export const useInitializeVideoPlugin = () => {
+// Initialise the video plugin
+export const useInitialiseVideoPlugin = () => {
   const registerPlugin = useRegisterPlugin();
 
   useEffect(() => {

@@ -1,10 +1,12 @@
 "use client";
 
 import React from "react";
-import { useInitializeVideoPlugin } from "@/plugins/videoPlugin";
+import { useInitialiseVideoPlugin } from "@/plugins/videoPlugin";
 
+// Register and initialise new plugins here
 const PluginInit = () => {
-  useInitializeVideoPlugin();
+  // Keep adding plugin init functions here
+  useInitialiseVideoPlugin();
   return <></>;
 };
 

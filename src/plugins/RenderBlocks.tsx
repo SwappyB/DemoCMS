@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { usePlugins, useExecuteHook } from "@/plugins/PluginContext";
 
 type Block = {
@@ -23,6 +24,7 @@ const RenderBlocks = ({ blocks }: { blocks: Block[] }) => {
         const plugin = plugins.find((p) => p.name === block.name);
         const renderer = plugin?.render;
 
+        // Execute before render hooks
         let pluginData = block.data;
         if (plugin) {
           executeHook("beforeRender", block.data, plugin?.name).then(
