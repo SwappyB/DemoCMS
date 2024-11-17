@@ -69,7 +69,8 @@ The app will run at http://localhost:3000
 ### **Register a Plugin**
 
 To add a plugin, go to the `plugins` folder and create a new file, e.g., `imagePlugin.ts`:
-import { Plugin } from "@/types/plugin";
+
+    import { Plugin } from "@/types/plugin";
 
     export const ImageViewerPlugin: Plugin = {
       name: "imageViewer",
@@ -140,6 +141,21 @@ Create a new file (or reuse the existing plugin registration setup) in the `plug
       return null;
     };
 
+To auto initialise plugin, add the plugin in `plugins/index.tsx`
+
+    "use client";
+
+    import React from "react";
+    import { RegisterImageViewerPlugin } from "@/plugins/imageViewerPlugin";
+
+    const PluginInit = () => {
+      // Other plugins will also be initialised here
+      RegisterImageViewerPlugin();
+      return <></>;
+    };
+
+    export default PluginInit;
+
 ### Hooks for Image Viewer Plugin
 
 - **`beforeSave`**: Ensures the image URL is not empty before saving.
@@ -177,4 +193,4 @@ Refer to the [plugin documentation](https://docs.google.com/document/d/1yYDSd012
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Check out [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
