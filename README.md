@@ -60,7 +60,9 @@ This will create the necessary tables for posts and pages.
 
 Start the development server:
 
-    npm run dev # or yarn dev
+    npm run dev
+    # or
+    yarn dev
 
 The app will run at http://localhost:3000
 
