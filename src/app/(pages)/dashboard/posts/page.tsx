@@ -8,6 +8,8 @@ import { getPosts } from "./_actions/getPostData";
 
 import RenderPostList from "./_components/RenderPostList";
 
+export const fetchCache = "force-no-store";
+
 const Posts = async () => {
   const postData = await getPosts();
   return (
