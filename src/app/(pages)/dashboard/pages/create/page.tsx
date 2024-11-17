@@ -18,9 +18,13 @@ import { pageFormSchema } from "@/components/pages/PageFormSchema";
 import { executeHooks } from "@/plugins/hooks";
 import { usePlugins } from "@/plugins/PluginContext";
 
+import { Preview } from "@/components/Preview";
+import { Button } from "@/components/ui/button";
+
 const CreatePage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const [isPreview, setIsPreview] = useState(false);
 
   const [pluginContent, setPluginContent] = useState<any[]>([]);
 
@@ -35,6 +39,8 @@ const CreatePage = () => {
       content: {}
     }
   });
+
+  const watchedValues = form.watch();
 
   async function onSubmit(values: z.infer<typeof pageFormSchema>) {
     try {
@@ -88,16 +94,28 @@ const CreatePage = () => {
     <div>
       <MaxWidthWrapper className="pb-2 pt-3 sm:pb-32 lg:pt-4 xl:pt-6 lg:pb-52">
         <div className="flex flex-col gap-4">
-          <p className="text-sm">Creating new page</p>
+          <div className="flex  flex-row gap-10 items-center">
+            <p className="text-sm">Creating new page</p>
+            <Button
+              variant={"outline"}
+              onClick={() => setIsPreview(!isPreview)}
+            >
+              {isPreview ? "Back to Editor" : "Preview"}
+            </Button>
+          </div>
           <Separator />
           <div>
-            <PageForm
-              form={form}
-              submitHandler={onSubmit}
-              isFormLoading={isLoading}
-              content={pluginContent}
-              setContent={setPluginContent}
-            />
+            {isPreview ? (
+              <Preview data={watchedValues} pluginContent={pluginContent} />
+            ) : (
+              <PageForm
+                form={form}
+                submitHandler={onSubmit}
+                isFormLoading={isLoading}
+                content={pluginContent}
+                setContent={setPluginContent}
+              />
+            )}
           </div>
         </div>
       </MaxWidthWrapper>
