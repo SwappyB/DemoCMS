@@ -4,6 +4,8 @@ import { generateUniqueSlug } from "@/lib/slugify";
 
 import { getPostBySlug } from "@/server/service/postService";
 
+export const dynamic = 'force-dynamic'
+
 // Get Post
 export async function GET() {
     try {
@@ -12,7 +14,6 @@ export async function GET() {
                 createdAt: "desc",
             },
         })
-
         return Response.json({
             success: true,
             status: 200,
