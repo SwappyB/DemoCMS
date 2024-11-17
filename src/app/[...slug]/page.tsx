@@ -17,7 +17,12 @@ export default async function DynamicPage({ params }: { params: tParams }) {
   });
 
   if (!pageData) {
-    return <div>Page not found</div>;
+    return (
+      <div className="flex flex-col items-center mt-20 text-3xl">
+        <p>404</p>
+        <p>Page not found</p>
+      </div>
+    );
   }
 
   const pluginData =
