@@ -14,8 +14,7 @@ import PageForm from "@/components/pages/PageForm";
 
 import type { Page } from "@/types";
 
-import { executeHooks } from "@/plugins/hooks";
-import { usePlugins } from "@/plugins/PluginContext";
+import { useExecuteHook } from "@/plugins/PluginContext";
 
 import { Preview } from "@/components/Preview";
 import { Button } from "@/components/ui/button";
@@ -31,7 +30,7 @@ const EditForm = ({ data }: EditPageProps) => {
 
   const [isPreview, setIsPreview] = useState(false);
 
-  const { hooks, plugins } = usePlugins();
+  const executeHook = useExecuteHook();
 
   const [pluginContent, setPluginContent] = useState<any[]>(
     data?.pluginContent && data?.pluginContent.length
@@ -54,8 +53,17 @@ const EditForm = ({ data }: EditPageProps) => {
     try {
       setIsLoading(true);
 
-      await executeHooks(hooks, "onSave", plugins, pluginContent);
-
+      // Execute "onSave" hooks before saving
+      const processedBlocks = await Promise.all(
+        pluginContent.map(async (block) => {
+          const dataWithHooks = await executeHook(
+            "beforeSave",
+            block.data,
+            block.name
+          );
+          return { ...block, data: dataWithHooks };
+        })
+      );
       const result = await fetch("/api/pages", {
         method: "PATCH",
         body: JSON.stringify({
@@ -64,7 +72,7 @@ const EditForm = ({ data }: EditPageProps) => {
           slug: values.slug,
           route: values.route,
           content: values.content,
-          pluginContent
+          pluginContent: processedBlocks
         }),
         headers: { "Content-Type": "application/json" }
       });

@@ -1,7 +1,7 @@
 "use client";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { usePlugins } from "@/plugins/PluginContext";
+import { usePlugins, useExecuteHook } from "@/plugins/PluginContext";
 
 type Block = {
   name: string;
@@ -15,14 +15,23 @@ type Block = {
  */
 const RenderBlocks = ({ blocks }: { blocks: Block[] }) => {
   const { plugins } = usePlugins();
+  const executeHook = useExecuteHook();
 
   return (
     <div className="flex flex-col gap-4">
       {blocks.map((block, index) => {
         const plugin = plugins.find((p) => p.name === block.name);
         const renderer = plugin?.render;
+
+        let pluginData = block.data;
+        if (plugin) {
+          executeHook("beforeRender", block.data, plugin?.name).then(
+            (data) => (pluginData = data)
+          );
+        }
+
         return renderer ? (
-          <div key={index}>{renderer(block.data)}</div>
+          <div key={index}>{renderer(pluginData)}</div>
         ) : (
           <p key={index}>Unknown block type: {block.name}</p>
         );

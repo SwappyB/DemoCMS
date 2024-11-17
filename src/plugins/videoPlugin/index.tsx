@@ -36,20 +36,22 @@ export const useInitializeVideoPlugin = () => {
       render: renderVideoBlock,
       editorComponent: VideoBlockEditor,
       hooks: {
-        onSave: [
-          {
-            name: "Validate Video URL",
-            handler: (data: any) => {
-              console.log("Validating video URL with data:", data.videoUrl);
+        beforeSave: (data: any) => {
+          console.log("Validating video URL with data:", data.videoUrl);
 
-              if (!isValidUrl(data.videoUrl)) {
-                throw new Error(
-                  `Invalid URL For Video Frame: "${data.videoUrl}"`
-                );
-              }
-            }
+          if (!isValidUrl(data.videoUrl)) {
+            throw new Error(`Invalid URL For Video Frame: "${data.videoUrl}"`);
           }
-        ]
+
+          return data;
+        },
+        beforeRender: (data: any) => {
+          console.log("working on the embed");
+          if (data?.videoUrl?.includes("youtube")) {
+            data.videoUrl = data.videoUrl.replace("watch?v=", "embed/");
+          }
+          return data;
+        }
       } as PluginHooks
     });
   }, [registerPlugin]);

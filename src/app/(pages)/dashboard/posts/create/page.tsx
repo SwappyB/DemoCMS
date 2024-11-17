@@ -15,8 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import PostForm from "@/components/posts/PostForm";
 import { postFormSchema } from "@/components/posts/PostFormSchema";
 
-import { executeHooks } from "@/plugins/hooks";
-import { usePlugins } from "@/plugins/PluginContext";
+import { useExecuteHook } from "@/plugins/PluginContext";
 
 import { Preview } from "@/components/Preview";
 import { Button } from "@/components/ui/button";
@@ -26,7 +25,7 @@ const CreatePost = () => {
   const { toast } = useToast();
 
   const [isPreview, setIsPreview] = useState(false);
-  const { hooks, plugins } = usePlugins();
+  const executeHook = useExecuteHook();
 
   const [pluginContent, setPluginContent] = useState<any[]>([]);
 
@@ -45,8 +44,17 @@ const CreatePost = () => {
     try {
       setIsLoading(true);
 
-      // Execute "onSave" hooks before saving to validate URL
-      await executeHooks(hooks, "onSave", plugins, pluginContent);
+      // Execute "onSave" hooks before saving
+      const processedBlocks = await Promise.all(
+        pluginContent.map(async (block) => {
+          const dataWithHooks = await executeHook(
+            "beforeSave",
+            block.data,
+            block.name
+          );
+          return { ...block, data: dataWithHooks };
+        })
+      );
 
       const result = await fetch("/api/posts", {
         method: "POST",
@@ -54,7 +62,7 @@ const CreatePost = () => {
           title: values.title,
           slug: values.slug,
           content: values.content,
-          pluginContent: pluginContent
+          pluginContent: processedBlocks
         }),
         headers: { "Content-Type": "application/json" }
       });

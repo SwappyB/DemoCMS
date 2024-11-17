@@ -14,8 +14,7 @@ import PostForm from "@/components/posts/PostForm";
 
 import type { Post } from "@/types";
 
-import { executeHooks } from "@/plugins/hooks";
-import { usePlugins } from "@/plugins/PluginContext";
+import { useExecuteHook } from "@/plugins/PluginContext";
 
 import { Preview } from "@/components/Preview";
 import { Button } from "@/components/ui/button";
@@ -30,7 +29,7 @@ const EditForm = ({ data }: EditPostProps) => {
   const { toast } = useToast();
   const [isPreview, setIsPreview] = useState(false);
 
-  const { hooks, plugins } = usePlugins();
+  const executeHook = useExecuteHook();
 
   const [pluginContent, setPluginContent] = useState<any[]>(
     data?.pluginContent && data?.pluginContent.length
@@ -52,8 +51,17 @@ const EditForm = ({ data }: EditPostProps) => {
     try {
       setIsLoading(true);
 
-      await executeHooks(hooks, "onSave", plugins, pluginContent);
-
+      // Execute "onSave" hooks before saving
+      const processedBlocks = await Promise.all(
+        pluginContent.map(async (block) => {
+          const dataWithHooks = await executeHook(
+            "beforeSave",
+            block.data,
+            block.name
+          );
+          return { ...block, data: dataWithHooks };
+        })
+      );
       const result = await fetch("/api/posts", {
         method: "PATCH",
         body: JSON.stringify({
@@ -61,7 +69,7 @@ const EditForm = ({ data }: EditPostProps) => {
           title: values.title,
           slug: values.slug,
           content: values.content,
-          pluginContent
+          pluginContent: processedBlocks
         }),
         headers: { "Content-Type": "application/json" }
       });

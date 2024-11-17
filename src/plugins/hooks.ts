@@ -26,7 +26,7 @@ export const executeHooks = async (
                 await hook.handler(block.data);
             } catch (error) {
                 console.error(`Error in plugin "${block.name}" hook "${hook.name}":`, error);
-                throw error; // You can decide to handle this error or propagate it
+                throw error;
             }
         }
     }
