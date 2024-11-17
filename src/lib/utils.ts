@@ -5,6 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+// Use this to create new random id for plugin blocks
 export function generateRandomId(length = 16) {
   const array = new Uint8Array(length);
   crypto.getRandomValues(array);

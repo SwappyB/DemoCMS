@@ -132,7 +132,7 @@ const PostForm = ({
             <EditorToolbar onAddBlock={handleAddBlock} />
           </div>
 
-          <Button type="submit" className="w-full" disabled={isFormLoading}>
+          <Button type="submit" disabled={isFormLoading}>
             Submit
           </Button>
         </form>

@@ -84,6 +84,9 @@ const PageForm = ({
                     <Input type="text" {...field} />
                   </div>
                 </FormControl>
+                <FormDescription>
+                  Leaving this field empty will auto generate slug.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
