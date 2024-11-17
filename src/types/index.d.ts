@@ -22,13 +22,3 @@ export interface Page {
     createdAt: Date;
     updatedAt: Date;
 }
-
-export interface Plugin {
-    id: number;
-    name: string;
-    slug: string;
-    enabled: boolean;
-    config: any;
-    createdAt: Date;
-    updatedAt: Date;
-}

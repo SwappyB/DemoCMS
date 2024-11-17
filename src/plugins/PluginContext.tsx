@@ -71,8 +71,13 @@ export const usePlugins = () => {
   return context;
 };
 
-export const useRegisterPlugin = () =>
-  useContext(PluginContext)?.registerPlugin;
+export const useRegisterPlugin = () => {
+  const context = useContext(PluginContext);
+  if (!context) {
+    throw new Error("usePlugins must be used within a PluginProvider");
+  }
+  return context.registerPlugin;
+};
 
 export const useExecuteHook = () => {
   const context = useContext(PluginContext);

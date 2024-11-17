@@ -4,7 +4,7 @@
 import { usePlugins } from "./PluginContext";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import type { Plugin } from "./PluginContext";
+import type { Plugin } from "@/types/hooks";
 
 const RenderPluginForm = ({
   plugin,
