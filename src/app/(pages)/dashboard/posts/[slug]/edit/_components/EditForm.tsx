@@ -17,6 +17,10 @@ import type { Post } from "@/types";
 import { executeHooks } from "@/plugins/hooks";
 import { usePlugins } from "@/plugins/PluginContext";
 
+import { Preview } from "@/components/Preview";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+
 type EditPostProps = {
   data: Post | null;
 };
@@ -24,6 +28,7 @@ type EditPostProps = {
 const EditForm = ({ data }: EditPostProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const [isPreview, setIsPreview] = useState(false);
 
   const { hooks, plugins } = usePlugins();
 
@@ -41,6 +46,7 @@ const EditForm = ({ data }: EditPostProps) => {
       content: data?.content
     }
   });
+  const watchedValues = form.watch();
 
   async function onSubmit(values: z.infer<typeof postFormSchema>) {
     try {
@@ -90,15 +96,35 @@ const EditForm = ({ data }: EditPostProps) => {
   }
 
   return (
-    <div>
-      <PostForm
-        form={form}
-        submitHandler={onSubmit}
-        isFormLoading={isLoading}
-        content={pluginContent}
-        setContent={setPluginContent}
-      />
-    </div>
+    <>
+      <div className="flex  flex-row gap-10 items-center">
+        {!isPreview ? (
+          <p className="text-5xl">
+            <span className="text-muted-foreground">Editing </span>
+            {data?.title}
+          </p>
+        ) : (
+          ""
+        )}
+        <Button variant={"outline"} onClick={() => setIsPreview(!isPreview)}>
+          {isPreview ? "Back to Editor" : "Preview"}
+        </Button>
+      </div>
+      <Separator />
+      <div>
+        {isPreview ? (
+          <Preview data={watchedValues} pluginContent={pluginContent} />
+        ) : (
+          <PostForm
+            form={form}
+            submitHandler={onSubmit}
+            isFormLoading={isLoading}
+            content={pluginContent}
+            setContent={setPluginContent}
+          />
+        )}
+      </div>
+    </>
   );
 };
 
