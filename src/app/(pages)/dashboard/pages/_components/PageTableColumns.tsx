@@ -106,8 +106,11 @@ export const getPageTableColumns = ({
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              // TODO: Add share link later
-              onClick={() => navigator.clipboard.writeText(page.slug)}
+              onClick={() =>
+                navigator.clipboard.writeText(
+                  (process.env.NEXT_PUBLIC_BASE_URL || "") + page.route
+                )
+              }
             >
               Copy share link
             </DropdownMenuItem>
@@ -115,6 +118,7 @@ export const getPageTableColumns = ({
             <a href={`${page.route}`}>
               <DropdownMenuItem>Open Page</DropdownMenuItem>
             </a>
+            <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => deletePageHandler(page.slug)}>
               Delete Page
             </DropdownMenuItem>

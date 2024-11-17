@@ -99,8 +99,13 @@ export const getPostTableColumns = ({
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              // TODO: Add share link later
-              onClick={() => navigator.clipboard.writeText(post.slug)}
+              onClick={() =>
+                navigator.clipboard.writeText(
+                  (process.env.NEXT_PUBLIC_BASE_URL || "") +
+                    "/posts/" +
+                    post.slug
+                )
+              }
             >
               Copy share link
             </DropdownMenuItem>
@@ -108,6 +113,7 @@ export const getPostTableColumns = ({
             <a href={`/posts/${post.slug}`}>
               <DropdownMenuItem>Open Post</DropdownMenuItem>
             </a>
+            <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => deletePostHandler(post.slug)}>
               Delete Post
             </DropdownMenuItem>
