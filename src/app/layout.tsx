@@ -14,6 +14,8 @@ const font = Recursive({ subsets: ["latin"] });
 import { PluginProvider } from "@/plugins/PluginContext";
 import PluginInit from "@/plugins";
 
+export const fetchCache = "force-no-store";
+
 export default function RootLayout({
   children
 }: Readonly<{
