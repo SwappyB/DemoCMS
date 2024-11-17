@@ -8,6 +8,8 @@ import { getPages } from "./_actions/getPageData";
 
 import RenderPageList from "./_components/RenderPageList";
 
+export const fetchCache = "force-no-store";
+
 const PageList = async () => {
   const pageData = await getPages();
   return (

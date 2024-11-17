@@ -6,6 +6,8 @@ import RenderEditorContent from "@/components/WYSIWYG/RenderContent";
 import RenderBlocks from "@/plugins/RenderBlocks";
 type tParams = Promise<{ slug: string[] }>;
 
+export const fetchCache = "force-no-store";
+
 export default async function DynamicPage({ params }: { params: tParams }) {
   const { slug } = await params;
   // Convert the slug array into a route string
