@@ -3,6 +3,31 @@ import { db } from "@/db/prisma";
 import { generateUniqueSlug } from "@/lib/slugify";
 import { getPageBySlug } from "@/server/service/pageService";
 
+export const dynamic = 'force-dynamic'
+
+// Get Post
+export async function GET() {
+    try {
+        const allPages = await db.page.findMany({
+            orderBy: {
+                createdAt: "desc"
+            }
+        });
+        return Response.json({
+            success: true,
+            status: 200,
+            data: allPages
+        })
+    } catch (error) {
+        console.log(error)
+        return Response.json({
+            success: false,
+            status: 500,
+            message: "Something went wrong!"
+        })
+    }
+}
+
 // Create Page
 export async function POST(request: NextRequest) {
     try {
