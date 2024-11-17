@@ -4,7 +4,6 @@ import { generateUniqueSlug } from "@/lib/slugify";
 
 import { getPostBySlug } from "@/server/service/postService";
 
-
 // Get Post
 export async function GET() {
     try {
