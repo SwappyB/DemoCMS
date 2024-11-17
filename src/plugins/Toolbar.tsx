@@ -32,7 +32,7 @@ const EditorToolbar: React.FC<{ onAddBlock: (block: any) => void }> = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="text-3xl">Plugins</div>
+      <div className="text-lg">Plugins</div>
 
       {currPlugin && (
         <RenderPluginEditorComponent

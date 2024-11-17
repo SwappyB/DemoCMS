@@ -18,7 +18,7 @@ export default async function Home() {
     <div className="grainy-light">
       <section>
         <MaxWidthWrapper className="pb-2 pt-3 sm:pb-32 lg:pt-4 xl:pt-6 lg:pb-52">
-          <p className="text-5xl">Dashboard</p>
+          <p className="text-3xl sm:text-4xl">Dashboard</p>
           <div className="flex flex-row gap-4 pt-10">
             <Link href={"/dashboard/pages"}>
               <Card>

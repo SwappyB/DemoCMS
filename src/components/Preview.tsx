@@ -15,8 +15,8 @@ export function Preview({ data, pluginContent }: PreviewProps) {
   return (
     <div>
       <div className="flex flex-col gap-4">
-        <div className="text-5xl">{data?.title}</div>
-        <div className="text-muted-foreground text-lg">
+        <div className="text-3xl sm:text-4xl">{data?.title}</div>
+        <div className="text-muted-foreground text-sm sm:text-lg">
           Last updated at: {format(new Date(), "yyyy-MM-dd HH:mm")}
         </div>
         <RenderEditorContent content={data?.content} />

@@ -112,7 +112,7 @@ const EditForm = ({ data }: EditPostProps) => {
     <>
       <div className="flex  flex-row gap-10 items-center">
         {!isPreview ? (
-          <p className="text-5xl">
+          <p className="text-3xl sm:text-4xl">
             <span className="text-muted-foreground">Editing </span>
             {data?.title}
           </p>

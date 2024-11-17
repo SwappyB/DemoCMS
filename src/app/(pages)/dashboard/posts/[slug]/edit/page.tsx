@@ -14,7 +14,7 @@ const EditPost = async ({ params }: { params: tParams }) => {
 
   return (
     <div>
-      <MaxWidthWrapper className="pb-2 pt-3 sm:pb-32 lg:pt-4 xl:pt-6 lg:pb-52">
+      <MaxWidthWrapper className="pb-2 mb-20 pt-3 sm:pb-32 lg:pt-4 xl:pt-6 lg:pb-52">
         <div className="flex flex-col gap-4">
           <EditForm data={postData} />
         </div>
