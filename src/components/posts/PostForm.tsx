@@ -17,7 +17,7 @@ import EditorToolbar from "@/plugins/Toolbar";
 import WysiwygEditor from "@/components/WYSIWYG/Editor";
 import { UseFormReturn } from "react-hook-form";
 
-import { usePlugins } from "@/plugins/PluginContext";
+import RenderBlocks from "@/plugins/RenderBlocks";
 
 type PostFormProps = {
   form: UseFormReturn<
@@ -51,8 +51,6 @@ const PostForm = ({
       prevItems.filter((item: any) => item.id !== block.id)
     );
   };
-
-  const { plugins } = usePlugins();
 
   return (
     <>
@@ -113,7 +111,6 @@ const PostForm = ({
           <div className="flex flex-col gap-10">
             <div className="flex flex-col gap-10">
               {content?.map((block) => {
-                const plugin = plugins.find((p) => p.name === block.name);
                 return (
                   <div key={block.name + block.id + Math.random()}>
                     <Button
@@ -126,7 +123,7 @@ const PostForm = ({
                     >
                       Remove this plugin
                     </Button>
-                    {plugin?.render(block.data)}
+                    <RenderBlocks blocks={[block]} />
                   </div>
                 );
               })}
