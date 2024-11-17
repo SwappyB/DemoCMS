@@ -4,12 +4,6 @@
 import { Plugin, HookName } from "@/types/hooks";
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
-// type PluginContextType = {
-//   plugins: Plugin[];
-//   hooks: PluginHooks;
-//   executeHook: any;
-//   registerPlugin: (plugin: Plugin) => void;
-// };
 interface PluginManager {
   plugins: Plugin[];
   registerPlugin: (plugin: Plugin) => void;
@@ -22,28 +16,14 @@ interface PluginManager {
 
 const PluginContext = createContext<PluginManager | undefined>(undefined);
 
-// const PluginContext = createContext<PluginContextType | undefined>(undefined);
-
 export const PluginProvider = ({ children }: { children: ReactNode }) => {
   const [plugins, setPlugins] = useState<Plugin[]>([]);
-  // const [hooks, setHooks] = useState<PluginHooks>({});
 
   const registerPlugin = (plugin: Plugin) => {
     // Prevent duplicate registration
     if (plugins.find((p) => p.name === plugin.name)) return;
 
     setPlugins((prev) => [...prev, plugin]);
-
-    // const pluginHooks = plugin.hooks || {};
-    // setHooks((prev) => {
-    //   const newHooks: PluginHooks = { ...prev };
-    //   for (const [key, value] of Object.entries(pluginHooks)) {
-    //     const hookType = key as keyof PluginHooks;
-    //     if (!newHooks[hookType]) newHooks[hookType] = [];
-    //     newHooks[hookType] = [...(newHooks[hookType] || []), ...(value || [])];
-    //   }
-    //   return newHooks;
-    // });
   };
 
   const executeHook = async (

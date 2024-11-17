@@ -53,7 +53,7 @@ const EditForm = ({ data }: EditPageProps) => {
     try {
       setIsLoading(true);
 
-      // Execute "onSave" hooks before saving
+      // Execute "beforeSave" hooks before saving
       const processedBlocks = await Promise.all(
         pluginContent.map(async (block) => {
           const dataWithHooks = await executeHook(
@@ -81,6 +81,11 @@ const EditForm = ({ data }: EditPageProps) => {
         toast({
           title: "Success",
           description: res.message
+        });
+
+        // Execute "afterSave" hooks before saving
+        pluginContent.map((block) => {
+          executeHook("afterSave", block.data, block.name);
         });
       } else {
         toast({

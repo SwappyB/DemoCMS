@@ -49,6 +49,9 @@ const VideoPlugin: Plugin = {
         data.videoUrl = data.videoUrl.replace("watch?v=", "embed/");
       }
       return data;
+    },
+    afterSave: (data: any) => {
+      console.log("Video saved successfully", data);
     }
   }
 };
